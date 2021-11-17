@@ -1,13 +1,6 @@
 // import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class UsersController {
-    public async index(){
-        return "GET Users";
-    }
-
-    public async create(){
-        return "POST users";
-    }
+export default class AuthController {
 
     public async store(){
         return "POST users";
@@ -15,10 +8,6 @@ export default class UsersController {
 
     public async show({view}){
         return view.render("users");
-    }
-
-    public async edit(){
-        return "POST users";
     }
 
     public async update(){

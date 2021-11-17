@@ -16,13 +16,13 @@ export default class User extends BaseModel {
   public password: string
 
   @column()
-  public address: string
-
-  @column()
   public gender: string
 
   @column()
-  public dateOfBirth: number
+  public mobile: number
+
+  @column()
+  public date: number
 
   @column()
   public rememberMeToken?: string

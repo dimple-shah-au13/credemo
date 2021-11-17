@@ -18,7 +18,10 @@ export default class Profile extends BaseModel {
   public gender: string
 
   @column()
-  public dateOfBirth: number
+  public mobile: number
+
+  @column()
+  public date: number
 
 
   @column.dateTime({ autoCreate: true })
