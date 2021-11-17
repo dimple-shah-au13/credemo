@@ -5,6 +5,9 @@ export default class Profile extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
+  // @column({ columnName: 'user_id', isPrimary: true })
+  // public id: number
+
   @column()
   public name: string
 
@@ -21,7 +24,10 @@ export default class Profile extends BaseModel {
   public mobile: number
 
   @column()
-  public date: number
+  public dob: DateTime
+
+  // @column()
+  // public avatarUrl: string | null
 
 
   @column.dateTime({ autoCreate: true })

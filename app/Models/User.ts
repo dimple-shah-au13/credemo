@@ -22,7 +22,7 @@ export default class User extends BaseModel {
   public mobile: number
 
   @column()
-  public date: number
+  public dob: DateTime
 
   @column()
   public rememberMeToken?: string

@@ -25,15 +25,19 @@ Route.get('/', async () => {
 } )
 
 Route.group(() => {
-    Route.get('/user', "UsersController.index");
-    Route.get('/user/profile', "UsersController.index");
-    Route.get('/login', "ProfilesController.show")
-    Route.get('/register', "ProfilesController.show")
-    Route.post('/user', "UsersController.store")
-    Route.post('/user/profile', "UsersController.index")
-    Route.post('/login', "ProfilesController.login")
-    Route.post('/register', "ProfilesController.register")
-    Route.post('/logout', "ProfilesController.index")
+    Route.get('/user', "ProfileController.index");
+    Route.get('/user/profile', "ProfileController.store");
+    Route.post('/user/profile', "ProfileController.store")
+    Route.put('/user/profile', "ProfileController.update")
+    Route.delete('/user/profile', "ProfileController.destroy")
+
+    // Route.get('/login', "ProfilesController.create")
+    // Route.get('/register', "ProfilesController.show")
+    // Route.post('/user', "AuthController.store")
+    
+    Route.post('/login', "AuthController.login")
+    Route.post('/register', "AuthController.register")
+    Route.post('/logout', "AuthController.index")
 
 })
 
