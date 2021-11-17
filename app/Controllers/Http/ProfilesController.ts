@@ -59,6 +59,10 @@ export default class ProfilesController {
     }
 
     public async destroy({response, params:{id}}){
+        response.json({
+            message: "successfully deleted",
+            id
+        }) 
         
     }
 
