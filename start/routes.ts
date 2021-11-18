@@ -21,30 +21,27 @@
 import Route from '@ioc:Adonis/Core/Route'
 
 Route.get('/', async () => {
-    return "Welcome";
+    return "Welcome  to credemo" ;
 } )
 
-Route.group(() => {
-    Route.get('/user', "ProfileController.index");
-    Route.get('/user/profile', "ProfileController.store");
-    Route.post('/user/profile', "ProfileController.store")
-    Route.put('/user/profile', "ProfileController.update")
-    Route.delete('/user/profile', "ProfileController.destroy")
 
-    // Route.get('/login', "ProfilesController.create")
-    // Route.get('/register', "ProfilesController.show")
-    // Route.post('/user', "AuthController.store")
-    
+
+Route.group(() => {
+    Route.get('/user', "AuthController.index");
+
+    Route.get('/user/profile', "ProfilesController.index");
+    Route.post('/user/profile', "ProfilesController.store")
+    Route.patch('/user/profile', "ProfilesController.update")
+    Route.delete('/user/profile', "ProfilesController.destroy")
+   
     Route.post('/login', "AuthController.login")
+    Route.get('/register', "AuthController.store")
     Route.post('/register', "AuthController.register")
-    Route.post('/logout', "AuthController.index")
+    Route.post('/logout', "AuthController.logout")
 
 })
 
-// Route.get('/posts/:postID', async ({params, request,response}) => {
-//   request.body();
-//   response.status(200);
-//   return "I am string !!!" + params.postID;
-// })
+
+
 
 

@@ -1,5 +1,3 @@
-// import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { schema } from '@ioc:Adonis/Core/Validator'
 
 import User from "App/Models/User";
 
