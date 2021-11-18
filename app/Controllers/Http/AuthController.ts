@@ -20,7 +20,7 @@ export default class AuthController {
 
     public async register({request,response}){
         
-        return "REGISTER users";
+        return "REGISTERss users";
     }
 
     public async logout({request,auth,response}){
