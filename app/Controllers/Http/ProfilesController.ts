@@ -3,6 +3,8 @@
 import User from "App/Models/User";
 import { schema, rules } from '@ioc:Adonis/Core/Validator';
 import Profile from "App/Models/Profile";
+import { profiler } from "Config/app";
+import { Exception } from "@poppinss/utils";
 //import UsersSchema from "Database/migrations/1636979126300_users";
 
 enum Gender {
@@ -11,14 +13,20 @@ enum Gender {
 }
 
 export default class ProfilesController {
-    public async index({ response }) {
-        
-        const users = await User.all()
-        response.json({
-            message: "Here are users",
-            users
-        })
-        return User;
+    public async index({ auth }) {
+        //const currentProfile = await Profile.first({userId: auth.user.id })
+        //const currentProfile = await Profile.all()
+        // const payload = await request.validate({ schema: newProfileSchema })
+        // const currentProfile = await Profile.findBy('user_id', auth.user.id);
+        // if (!currentProfile) throw new Exception("Profile Not Found")
+        // const user = await User.find(currentProfile.userId)
+        // return { currentProfile, user };
+
+        // const currentProfile = await Profile.query().where('user_id', auth.user.id).preload('user').first();
+        const currentProfile = await Profile.findBy('user_id', auth.user.id);
+        if (!currentProfile) throw new Exception("Profile Not Found")
+        await currentProfile.load('user');
+        return currentProfile;
     }
 
 
@@ -29,7 +37,7 @@ export default class ProfilesController {
             ]),
             gender: schema.enum(Object.values(Gender)),
             mobile: schema.string({ trim: true }, [
-                rules.minLength(10),rules.maxLength(10), rules.regex(/^[0-9]+$/)
+                rules.minLength(10), rules.maxLength(10), rules.regex(/^[0-9]+$/)
             ]),
             dateOfBirth: schema.date({
                 format: 'yyyy-MM-dd',
@@ -41,8 +49,13 @@ export default class ProfilesController {
     }
 
 
-    public async update() {
-        const user = await User.findOrFail(1)
+    public async update({ request, auth }) {
+        const payload = await request.validate({ schema: newProfileSchema })
+        const profile = await Profile.create({ ...payload, userId: auth.user.id })
+        return profile;
+
+
+        const currentProfile = await Profile.findOrFail(1)
         user.last_login_at = DateTime.local() // Luxon dateTime is used
 
         await user.save()
@@ -50,45 +63,40 @@ export default class ProfilesController {
     }
 
 
-    public async destroy({ response, params: { user.id } }) {
-        const currentUser = await User.findById(user.id);
-        response.json({
-            message: "successfully deleted",
-            id
-        })
-
+    public async destroy({ auth }) {
+        const profile = await Profile.findById({ userId: auth.user.id });
+        await profile.delete()
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-          
-    
-    }
 
         //   try {
         //     const token = await auth.use('api').attempt(email, password)
