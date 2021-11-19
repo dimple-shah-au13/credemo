@@ -30,10 +30,10 @@ Route.post('/register', "AuthController.register")
 
 Route.group(() => {
     Route.group(() => {
-        Route.get('/user/profile', "ProfilesController.index");
-        Route.post('/user/profile', "ProfilesController.store")
-        Route.patch('/user/profile', "ProfilesController.update")
-        Route.delete('/user/profile', "ProfilesController.destroy")
+        Route.get('', "ProfilesController.index");
+        Route.post('', "ProfilesController.create")
+        Route.patch('', "ProfilesController.update")
+        Route.delete('', "ProfilesController.destroy")
     })
         .prefix("/user/profile")
     Route.post('/logout', "AuthController.logout")

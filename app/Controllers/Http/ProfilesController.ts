@@ -1,36 +1,46 @@
 // import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 import User from "App/Models/User";
+import { schema, rules } from '@ioc:Adonis/Core/Validator';
+import Profile from "App/Models/Profile";
 //import UsersSchema from "Database/migrations/1636979126300_users";
 
+enum Gender {
+    MALE = 'male',
+    FEMALE = 'female'
+}
+
 export default class ProfilesController {
-
-    public async index({response}){
+    public async index({ response }) {
         const users = await User.all()
-
         response.json({
             message: "Here are users",
             users
         })
         return User;
     }
-    
 
-    public async store( {request,auth,response}){
-        //const body = request.body
-        const currentUser = await User.findById(auth.user.id);
-        console.log(user.id);
-        if (!currentUser){
-            return response.status(401).json({
-                message:'The user does not exist.'
-                
-            }).redirect("/register")
-        }
 
+    public async create({ request, auth }) {
+        const newProfileSchema = schema.create({
+            name: schema.string({ trim: true }, [
+                rules.alpha(), rules.minLength(3), rules.maxLength(30),
+            ]),
+            gender: schema.enum(Object.values(Gender)),
+            mobile: schema.string({ trim: true }, [
+                rules.minLength(10),rules.maxLength(10), rules.regex(/^[0-9]+$/)
+            ]),
+            dateOfBirth: schema.date({
+                format: 'yyyy-MM-dd',
+            })
+        })
+        const payload = await request.validate({ schema: newProfileSchema })
+        const profile = await Profile.create({ ...payload, userId: auth.user.id })
+        return profile;
     }
 
-    
-    public async update (){
+
+    public async update() {
         const user = await User.findOrFail(1)
         user.last_login_at = DateTime.local() // Luxon dateTime is used
 
@@ -39,45 +49,14 @@ export default class ProfilesController {
     }
 
 
-    public async destroy({response, params:{user.id}}){
+    public async destroy({ response, params: { user.id } }) {
         const currentUser = await User.findById(user.id);
         response.json({
             message: "successfully deleted",
             id
-        }) 
-        
+        })
+
     }
-
-
-// import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-
-
-    
-
-    
-
-    // public async show({response, params:{id}}){
-    //     const user = User.find(id)
-
-    //     if(User){
-    //         return response.status(201).json({
-    //             message: "Here is the user",
-    //             data: User
-    //         })
-    //     }else{
-    //         return response.json({
-    //             message: "User not found",
-    //             id
-    //         }) 
-    //     }
-
-        
-    // }
-
-    
-        
-
-    
 }
 
 
@@ -108,16 +87,16 @@ export default class ProfilesController {
     
           
     
-    }     
-    
+    }
+
         //   try {
         //     const token = await auth.use('api').attempt(email, password)
         //     return token
         // } catch {
         //     return response.badRequest('Invalid credentials')
         // }
-          
-        
+
+
 
     // public async store({request,response}){
     //     const body = request.post()
@@ -127,7 +106,7 @@ export default class ProfilesController {
     //         email: request.input("email"),
     //         password: request.input("password")
     //     })
-        
+
     //     return response.redirect("back");
     // }
 
@@ -150,7 +129,7 @@ export default class ProfilesController {
     //         }) 
     //     }
 
-        
+
     // }
 
     // public async update({response, params:{id}}){
@@ -167,9 +146,9 @@ export default class ProfilesController {
     //         message: "successfully deleted",
     //         id
     //     }) 
-        
+
     // }
 
 
-    
+
 

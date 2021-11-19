@@ -1,10 +1,5 @@
-//import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-//import { HttpContext } from '@adonisjs/http-server/build/standalone';
-
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
-
 import User from "App/Models/User";
-
 
 const newUserSchema = schema.create({
   email: schema.string({ trim: true }, [
@@ -16,49 +11,25 @@ const newUserSchema = schema.create({
 
 })
 
-
-
 export default class AuthController {
-
   public async register({ request }) {
-
     const payload = await request.validate({ schema: newUserSchema })
-
     const user = await User.create(payload)
-
     return user;
-    console.log(user)
-
   }
 
-
-
-  public async login({ request, auth, response }) {
-
+  public async login({ request, auth }) {
     const payload = await request.validate({ schema: newUserSchema })
-
-    try {
-      const token = await auth.use('api').attempt(payload.email, payload.password, {expiresIn: '7days'})
-      return token
-    } catch {
-      return response.badRequest('Invalid credentials')
-    }
-    
-   
+    const token = await auth.use('api').attempt(payload.email, payload.password, { expiresIn: '7days' })
+    return token;
   }
 
-
-  public async logout({ auth, response }) {
-
+  public async logout({ auth }) {
     await auth.use('api').revoke()
     return {
       revoked: true
     }
-    response.redirect("/register")
   }
-
-
-
 }
 
 
@@ -75,7 +46,7 @@ export default class AuthController {
 
 
 
-    
+
 
 
 
