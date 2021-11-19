@@ -12,6 +12,7 @@ enum Gender {
 
 export default class ProfilesController {
     public async index({ response }) {
+        
         const users = await User.all()
         response.json({
             message: "Here are users",
