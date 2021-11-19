@@ -1,7 +1,7 @@
 // import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 import User from "App/Models/User";
-import UsersSchema from "Database/migrations/1636979126300_users";
+//import UsersSchema from "Database/migrations/1636979126300_users";
 
 export default class ProfilesController {
 
@@ -16,9 +16,10 @@ export default class ProfilesController {
     }
     
 
-    public async store( {request,response}){
+    public async register( {request,auth,response}){
         //const body = request.body
-        const currentUser = await User.findById(user_id);
+        const currentUser = await User.findById(auth.user.id);
+        console.log(user.id);
         if (!currentUser){
             return response.status(401).json({
                 message:'The user does not exist.'
@@ -26,7 +27,9 @@ export default class ProfilesController {
             }).redirect("/register")
         }
 
+    }
 
+    
     public async update (){
         const user = await User.findOrFail(1)
         user.last_login_at = DateTime.local() // Luxon dateTime is used

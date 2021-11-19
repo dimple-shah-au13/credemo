@@ -16,7 +16,7 @@ export default class Profile extends BaseModel {
   public mobile: number
 
   @column()
-  public date_of_birth: DateTime
+  public dateOfBirth: DateTime
 
 
   @column.dateTime({ autoCreate: true })
