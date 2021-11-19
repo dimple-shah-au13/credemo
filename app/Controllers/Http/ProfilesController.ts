@@ -5,6 +5,7 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator';
 import Profile from "App/Models/Profile";
 import { profiler } from "Config/app";
 import { Exception } from "@poppinss/utils";
+import { Response } from "@adonisjs/http-server/build/standalone";
 //import UsersSchema from "Database/migrations/1636979126300_users";
 
 enum Gender {
@@ -50,22 +51,33 @@ export default class ProfilesController {
 
 
     public async update({ request, auth }) {
+        const newProfileSchema = schema.create({
+            name: schema.string({ trim: true }, [
+                rules.alpha(), rules.minLength(3), rules.maxLength(30),
+            ]),
+            gender: schema.enum(Object.values(Gender)),
+            mobile: schema.string({ trim: true }, [
+                rules.minLength(10), rules.maxLength(10), rules.regex(/^[0-9]+$/)
+            ]),
+            dateOfBirth: schema.date({
+                format: 'yyyy-MM-dd',
+            })
+        })
         const payload = await request.validate({ schema: newProfileSchema })
-        const profile = await Profile.create({ ...payload, userId: auth.user.id })
+        const profile = await Profile.Update({ ...payload, userId: auth.user.id })
         return profile;
 
+        profile.last_login_at = DateTime.local() // Luxon dateTime is used
 
-        const currentProfile = await Profile.findOrFail(1)
-        user.last_login_at = DateTime.local() // Luxon dateTime is used
-
-        await user.save()
+        await profile.save()
 
     }
 
 
-    public async destroy({ auth }) {
-        const profile = await Profile.findById({ userId: auth.user.id });
-        await profile.delete()
+    public async destroy({ auth ,response}) {
+        const currentProfile = await Profile.findBy('user_id', auth.user.id);
+        await currentProfile.delete()
+        response.json({message:"deleted successfully"})
     }
 
 
