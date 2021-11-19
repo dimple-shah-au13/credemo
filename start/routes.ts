@@ -32,7 +32,7 @@ Route.group(() => {
     Route.group(() => {
         Route.get('', "ProfilesController.index");
         Route.post('', "ProfilesController.create")
-        Route.patch('', "ProfilesController.update")
+        Route.put('', "ProfilesController.update")
         Route.delete('', "ProfilesController.destroy")
     })
         .prefix("/user/profile")

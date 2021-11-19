@@ -52,24 +52,27 @@ export default class ProfilesController {
 
     public async update({ request, auth }) {
         const newProfileSchema = schema.create({
-            name: schema.string({ trim: true }, [
+            name: schema.string.optional({ trim: true }, [
                 rules.alpha(), rules.minLength(3), rules.maxLength(30),
             ]),
-            gender: schema.enum(Object.values(Gender)),
-            mobile: schema.string({ trim: true }, [
+            gender: schema.enum.optional(Object.values(Gender)),
+            mobile: schema.string.optional({ trim: true }, [
                 rules.minLength(10), rules.maxLength(10), rules.regex(/^[0-9]+$/)
             ]),
-            dateOfBirth: schema.date({
+            dateOfBirth: schema.date.optional({
                 format: 'yyyy-MM-dd',
             })
-        })
+        })        
         const payload = await request.validate({ schema: newProfileSchema })
-        const profile = await Profile.Update({ ...payload, userId: auth.user.id })
-        return profile;
-
-        profile.last_login_at = DateTime.local() // Luxon dateTime is used
-
-        await profile.save()
+        const currentProfile = await Profile.findBy('user_id', auth.user.id);
+        if (!currentProfile) throw new Exception("Profile Not Found")
+        if(currentProfile){
+            currentProfile.merge({
+               ...payload ,userId: auth.user.id
+            })
+            await currentProfile.save()
+        }
+        return currentProfile;        
 
     }
 
