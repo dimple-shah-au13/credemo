@@ -21,30 +21,21 @@
 import Route from '@ioc:Adonis/Core/Route'
 
 Route.get('/', async () => {
-    return "Welcome";
-} )
-
-Route.group(() => {
-    Route.get('/user', "ProfileController.index");
-    Route.get('/user/profile', "ProfileController.store");
-    Route.post('/user/profile', "ProfileController.store")
-    Route.put('/user/profile', "ProfileController.update")
-    Route.delete('/user/profile', "ProfileController.destroy")
-
-    // Route.get('/login', "ProfilesController.create")
-    // Route.get('/register', "ProfilesController.show")
-    // Route.post('/user', "AuthController.store")
-    
-    Route.post('/login', "AuthController.login")
-    Route.post('/register', "AuthController.register")
-    Route.post('/logout', "AuthController.index")
-
+    return "Welcome  to credemo";
 })
 
-// Route.get('/posts/:postID', async ({params, request,response}) => {
-//   request.body();
-//   response.status(200);
-//   return "I am string !!!" + params.postID;
-// })
 
+Route.post('/login', "AuthController.login")
+Route.post('/register', "AuthController.register")
 
+Route.group(() => {
+    Route.group(() => {
+        Route.get('', "ProfilesController.index");
+        Route.post('', "ProfilesController.create")
+        Route.put('', "ProfilesController.update")
+        Route.delete('', "ProfilesController.destroy")
+    })
+        .prefix("/user/profile")
+    Route.post('/logout', "AuthController.logout")
+
+}).middleware("auth")

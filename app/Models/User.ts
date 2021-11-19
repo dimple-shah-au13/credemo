@@ -3,29 +3,14 @@ import Hash from '@ioc:Adonis/Core/Hash'
 import { column, beforeSave, BaseModel } from '@ioc:Adonis/Lucid/Orm'
 
 export default class User extends BaseModel {
-  public static get connection (){
-    return 'postgres'
-  }
   @column({ isPrimary: true })
   public id: number
-
-  @column()
-  public name: string
 
   @column()
   public email: string
 
   @column({ serializeAs: null })
   public password: string
-
-  @column()
-  public gender: string
-
-  @column()
-  public mobile: number
-
-  @column()
-  public dob: DateTime
 
   @column()
   public rememberMeToken?: string
@@ -37,7 +22,7 @@ export default class User extends BaseModel {
   public updatedAt: DateTime
 
   @beforeSave()
-  public static async hashPassword (user: User) {
+  public static async hashPassword(user: User) {
     if (user.$dirty.password) {
       user.password = await Hash.make(user.password)
     }

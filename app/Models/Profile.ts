@@ -1,21 +1,19 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import User from 'App/Models/User'
+import { BaseModel, column ,  belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
 
 export default class Profile extends BaseModel {
   @column({ isPrimary: true })
   public id: number
+  
+  @column()
+  public userId: number;
 
-  // @column({ columnName: 'user_id', isPrimary: true })
-  // public id: number
+  @belongsTo(() => User)
+  public user: BelongsTo<typeof User>
 
   @column()
   public name: string
-
-  @column()
-  public email: string
-
-  @column({ serializeAs: null })
-  public password: string
 
   @column()
   public gender: string
@@ -24,10 +22,7 @@ export default class Profile extends BaseModel {
   public mobile: number
 
   @column()
-  public dob: DateTime
-
-  // @column()
-  // public avatarUrl: string | null
+  public dateOfBirth: DateTime
 
 
   @column.dateTime({ autoCreate: true })
@@ -35,4 +30,5 @@ export default class Profile extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+  
 }
