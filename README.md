@@ -41,3 +41,14 @@ Route structure:
     post /user/profile -> ProfileController
     put /user/profile -> ProfileController
     delete /user/profile -> ProfileController
+
+For getting profile users=
+        //const currentProfile = await Profile.first({userId: auth.user.id })
+        //const currentProfile = await Profile.all()
+        // const payload = await request.validate({ schema: newProfileSchema })
+        // const currentProfile = await Profile.findBy('user_id', auth.user.id);
+        // if (!currentProfile) throw new Exception("Profile Not Found")
+        // const user = await User.find(currentProfile.userId)
+        // return { currentProfile, user };
+
+        // const currentProfile = await Profile.query().where('user_id', auth.user.id).preload('user').first();
