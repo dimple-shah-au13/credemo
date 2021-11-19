@@ -16,7 +16,7 @@ export default class ProfilesController {
     }
     
 
-    public async register( {request,auth,response}){
+    public async store( {request,auth,response}){
         //const body = request.body
         const currentUser = await User.findById(auth.user.id);
         console.log(user.id);
@@ -39,8 +39,8 @@ export default class ProfilesController {
     }
 
 
-    public async destroy({response, params:{user_id}}){
-        const currentUser = await User.findById(user_id);
+    public async destroy({response, params:{user.id}}){
+        const currentUser = await User.findById(user.id);
         response.json({
             message: "successfully deleted",
             id
